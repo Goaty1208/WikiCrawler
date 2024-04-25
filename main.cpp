@@ -6,11 +6,10 @@
 
 int main() {
 
-	std::regex Regex(R"(href="/wiki/[^"]+)"); //What the fuck
-
-	std::cout << "Regex Test D --- WikiNode Class" << std::endl << std::endl;
+	std::cout << "Regex Test E --- cURL" << std::endl << std::endl;
 
 	WikiNode RegexArticle("regex.htm");
 
+	RegexArticle.SavePages();
 }
 

@@ -6,6 +6,7 @@
 #include <chrono>
 #include <iterator>
 #include <set>
+#include <curl/curl.h>
 #include "WikiLink.h"
 
 //--------------------------------------------------------------|
@@ -17,6 +18,8 @@ const std::regex WikiLinkRegex(R"(href="/wiki/[^"]+)"); //------|
 class WikiNode {
 	public:
 	WikiLinks NodeWikiLinks;
+	void SavePages();
+
 	WikiNode(std::string InputFile);
 	~WikiNode();
 	private:

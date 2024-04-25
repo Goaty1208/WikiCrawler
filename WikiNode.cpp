@@ -36,7 +36,7 @@ void WikiNode::SearchLinks(std::string InputText, std::regex Regex) {
 
 		IntermediateName = IntermediateLink.substr(12, IntermediateLink.size());
 		IntermediateLink = IntermediateLink.substr(6, IntermediateLink.size());
-		IntermediateLink.insert(0, "https://www.wikipedia.org");
+		IntermediateLink.insert(0, "https://en.wikipedia.org");
 
 		//End of string processing ------------------------------------------------------------------------
 		link.link = IntermediateLink;
@@ -45,9 +45,31 @@ void WikiNode::SearchLinks(std::string InputText, std::regex Regex) {
 
 		iter = matches[0].second;
 	}
+}
 
-	for (auto const &CurrentLink : this->NodeWikiLinks) {
-		std::cout << CurrentLink << std::endl;
+void WikiNode::SavePages() {
+	CURL *curl;
+	FILE *file = nullptr;
+	CURLcode res;
+	std::string url;
+	std::string outFileName;
+	curl = curl_easy_init();
+	if (curl) {
+		for (auto const &CurrentLink : this->NodeWikiLinks) {
+			std::cout << "Processing Next Link" << std::endl;
+			std::cout << CurrentLink << std::endl;
+			url = CurrentLink.link.c_str();
+			outFileName = CurrentLink.name + ".html";
+
+			#pragma warning(suppress : 4996)
+			file = fopen(outFileName.c_str(), "wb");
+			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
+			res = curl_easy_perform(curl);
+		}
+		curl_easy_cleanup(curl);
+		fclose(file);
 	}
 }
 
