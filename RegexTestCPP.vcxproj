@@ -24,6 +24,7 @@
     <ProjectGuid>{a2493edd-7a45-4705-90ca-67d137d019c5}</ProjectGuid>
     <RootNamespace>RegexTestCPP</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>WikiCrawler</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

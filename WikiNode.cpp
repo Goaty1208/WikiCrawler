@@ -55,18 +55,25 @@ void WikiNode::SavePages() {
 	std::string outFileName;
 	curl = curl_easy_init();
 	if (curl) {
+		size_t total = this->NodeWikiLinks.size();
+		size_t completion = 0;
 		for (auto const &CurrentLink : this->NodeWikiLinks) {
-			std::cout << "Processing Next Link" << std::endl;
-			std::cout << CurrentLink << std::endl;
-			url = CurrentLink.link.c_str();
-			outFileName = CurrentLink.name + ".html";
-
-			#pragma warning(suppress : 4996)
+			#pragma warning(suppress : 4996) //Bodgy solution but I really don't give a shit
 			file = fopen(outFileName.c_str(), "wb");
-			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-			curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
-			res = curl_easy_perform(curl);
+			/*std::cout << "Processing Next Link" << std::endl;
+			std::cout << CurrentLink << std::endl;*/
+			url = CurrentLink.link.c_str();
+			outFileName =R"(Downloads\)" + CurrentLink.name + ".html";	
+			if (file != nullptr) {
+				curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+				curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+				curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
+				res = curl_easy_perform(curl);				
+			} else {
+				std::cout << "\r\a[Error]: Error saving file: " << outFileName << std::endl;
+			}
+			completion++;
+			std::cout << "\r" << (completion * 100) / total << "/100%";
 		}
 		curl_easy_cleanup(curl);
 		fclose(file);
